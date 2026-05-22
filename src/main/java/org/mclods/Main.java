@@ -193,5 +193,99 @@ public class Main {
         System.out.println(employeesCountGroupedByGender);
         // This is a map of type Gender -> [Count]
         System.out.println();
+
+        // findFirst
+        System.out.println("Find the first element from the stream");
+        Optional<Employee> firstEmployee = employees.stream().findFirst();
+        System.out.println(firstEmployee.orElse(null));
+        System.out.println();
+
+
+        // findFirst with filter
+        System.out.println("Find one employee from Development Department");
+        Optional<Employee> firstEmployeeFromDepartment = employees
+                .stream()
+                .filter(employee -> employee.getDepartment().equals("Development"))
+                .findFirst();
+        System.out.println(firstEmployeeFromDepartment);
+        System.out.println();
+
+
+        // findAny
+        System.out.println("Find any employee from Development Department");
+        Optional<Employee> anyEmployeeFromDepartment = employees
+                .stream()
+                .filter(employee -> employee.getDepartment().equals("Development"))
+                .findAny();
+        System.out.println(anyEmployeeFromDepartment);
+        System.out.println();
+
+
+        // anyMatch(Predicate), allMatch(Predicate), noneMatch(Predicate) - all these takes a Predicate similar to filter()
+        System.out.println("Check if any employee belongs to development department");
+        boolean developmentDeptHasEmployees = employees
+                .stream()
+                .anyMatch(employee -> employee.getDepartment().equals("Development"));
+        System.out.println(developmentDeptHasEmployees);
+        System.out.println();
+
+
+        System.out.println("Check if any employee belongs to cooking department");
+        boolean cookingDeptHasEmployees = employees
+                .stream()
+                .anyMatch(employee -> employee.getDepartment().equals("Cooking"));
+        System.out.println(cookingDeptHasEmployees);
+        System.out.println();
+
+
+        System.out.println("Check if all employees belongs to development department");
+        boolean allEmployeesBelongToDevelopmentDept = employees
+                .stream()
+                .allMatch(employee -> employee.getDepartment().equals("Cooking"));
+        System.out.println(allEmployeesBelongToDevelopmentDept);
+        System.out.println();
+
+
+        System.out.println("Check if all employees have salary greater than 50000");
+        boolean allEmployeesHaveSalaryMoreThan50000 = employees
+                .stream()
+                .allMatch(employee -> employee.getSalary() > 50000);
+        System.out.println(allEmployeesHaveSalaryMoreThan50000);
+        System.out.println();
+
+
+        System.out.println("Check if there are no employees in the HR Department");
+        boolean hrDepartmentHasNoEmployees = employees
+                .stream()
+                .noneMatch(employee -> employee.getDepartment().equals("HR"));
+        System.out.println(hrDepartmentHasNoEmployees);
+        System.out.println();
+
+
+        System.out.println("Check if there are no employees in the Cooking Department");
+        boolean cookingDepartmentHasNoEmployees = employees
+                .stream()
+                .noneMatch(employee -> employee.getDepartment().equals("Cooking"));
+        System.out.println(cookingDepartmentHasNoEmployees);
+        System.out.println();
+
+
+        // limit(long)
+        System.out.println("Find names of top 3 highest paid employees");
+        List<String> top3HighestPaidEmployees = employees
+                .stream()
+                .sorted(Comparator.comparingDouble(Employee::getSalary).reversed())
+                .limit(3)
+                .map(Employee::getName)
+                .toList();
+        System.out.println(top3HighestPaidEmployees);
+        System.out.println();
+
+
+        // skip(long) - skip first n employees - used for pagination mostly
+        System.out.println("Show the names of all employees by skipping first 5");
+        List<String> employeeListFirst5Skipped = employees.stream().map(Employee::getName).skip(5).toList();
+        System.out.println(employeeListFirst5Skipped);
+        System.out.println();
     }
 }
